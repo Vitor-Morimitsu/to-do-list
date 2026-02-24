@@ -8,6 +8,30 @@ typedef struct compromisso{
     int prioridade;
 }Compromisso;
 
+void exibirCompromissos(Lista lista, int numeroLista){
+    if(lista == NULL){
+        printf("Erro em exibirCompromissos\n");
+        return;
+    }
+    if(numeroLista == 1){
+        printf("Lista 1 (muito importante e urgente):\n");
+    }else if(numeroLista == 2){
+        printf("Lista 2 ( muito importante e não urgente):\n");
+    }else if(numeroLista == 3){
+        printf("Lista 3 (não importante mas deve ser feito rápido):\n");
+    }else if(numeroLista == 4){
+        printf("Lista 4 (não importante e sem pressa):\n");
+    }
+    CelulaLista cel = getPrimeiraCelulaLista(lista);
+    while(cel != NULL){
+        void* atual = getConteudoCelula(cel);
+        Compromisso* compAtual = atual;
+        printf("ID: %i,     %s\n",getIDCelula(cel), compAtual->nomeTarefa);
+        cel = getProximaCelulaLista(cel);
+    }
+    printf("----------------------------------------------------------------------------\n");
+}
+
 int main()
 {
     int comando = 1;
@@ -59,100 +83,42 @@ int main()
             id++;
         }else if(comando == 2){
             //ver as tarefas salvas
-            printf("Lista 1:\n");
-            CelulaLista cel = getPrimeiraCelulaLista(listaP0);
-            while(cel != NULL){
-                void* atual = getConteudoCelula(cel);
-                Compromisso* compAtual = atual;
-                printf("%s\n", compAtual->nomeTarefa);
-                cel = getProximaCelulaLista(cel);
-            }
-            printf("----------------------------------------------------------------------------\n");
-
-            printf("Lista 2:\n");
-            CelulaLista cel2 = getPrimeiraCelulaLista(listaP1);
-            while(cel2 != NULL){
-                void* atual = getConteudoCelula(cel2);
-                Compromisso* compAtual = atual;
-                printf("%s\n", compAtual->nomeTarefa);
-                cel2 = getProximaCelulaLista(cel2);
-            }
-             printf("----------------------------------------------------------------------------\n");
-
-             printf("Lista 3:\n");
-            CelulaLista cel3 = getPrimeiraCelulaLista(listaP2);
-            while(cel3 != NULL){
-                void* atual = getConteudoCelula(cel3);
-                Compromisso* compAtual = atual;
-                printf("%s\n", compAtual->nomeTarefa);
-                cel3 = getProximaCelulaLista(cel3);
-            }
-             printf("----------------------------------------------------------------------------\n");
-
-             printf("Lista 4:\n");
-            CelulaLista cel4 = getPrimeiraCelulaLista(listaP3);
-            while(cel4 != NULL){
-                void* atual = getConteudoCelula(cel4);
-                Compromisso* compAtual = atual;
-                printf("%s\n", compAtual->nomeTarefa);
-                cel4 = getProximaCelulaLista(cel4);
-            }
-             printf("----------------------------------------------------------------------------\n");
+            exibirCompromissos(listaP0,1);
+            exibirCompromissos(listaP1,2);
+            exibirCompromissos(listaP2,3);
+            exibirCompromissos(listaP3,4);
 
         }else if(comando == 3){
             //remover tarefa
             int escolhaLista = -1;
-            int idTarefa = -1;
-            //EEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOOOOOOOOO ta removendo um item que não é o escolhido
-            
+            int idTarefa = -1;            
             printf("Digite a lista em que a tarefa que deseja remover está: ");
             scanf("%i", &escolhaLista);
             if(escolhaLista == 1){
-                //printar as tarefas com os ids
-                CelulaLista cel = getPrimeiraCelulaLista(listaP0);
-                while(cel != NULL){
-                    void* atual = getConteudoCelula(cel);
-                    Compromisso* compAtual = atual;
-                    printf("ID: %i -- Nome da tarefa: %s\n",getIDCelula(cel) ,compAtual->nomeTarefa);
-                    cel = getProximaCelulaLista(cel);
-                }
+                //printar as tarefas com os ids da lista p0
+                exibirCompromissos(listaP0,1);
 
                 printf("\nDigite o Id da tarefa que deseja remover: ");
                 scanf("%i", &idTarefa);
                 removerLista(listaP0, idTarefa);
 
             }else if(escolhaLista == 2){
-                CelulaLista cel = getPrimeiraCelulaLista(listaP1);
-                while(cel != NULL){
-                    void* atual = getConteudoCelula(cel);
-                    Compromisso* compAtual = atual;
-                    printf("ID: %i -- Nome da tarefa: %s\n",getIDCelula(cel) ,compAtual->nomeTarefa);
-                    cel = getProximaCelulaLista(cel);
-                }
+                exibirCompromissos(listaP1,2);
+
                 printf("\nDigite o Id da tarefa que deseja remover: ");
                 scanf("%i", &idTarefa);
                 removerLista(listaP1, idTarefa);
 
             }else if(escolhaLista == 3){
-                CelulaLista cel = getPrimeiraCelulaLista(listaP2);
-                while(cel != NULL){
-                    void* atual = getConteudoCelula(cel);
-                    Compromisso* compAtual = atual;
-                    printf("ID: %i -- Nome da tarefa: %s\n",getIDCelula(cel) ,compAtual->nomeTarefa);
-                    cel = getProximaCelulaLista(cel);
-                }
+                exibirCompromissos(listaP2,3);
+
                 printf("\nDigite o Id da tarefa que deseja remover: ");
                 scanf("%i", &idTarefa);
                 removerLista(listaP2, idTarefa);
 
             }else if(escolhaLista == 4){
-                CelulaLista cel = getPrimeiraCelulaLista(listaP3);
-                while(cel != NULL){
-                    void* atual = getConteudoCelula(cel);
-                    Compromisso* compAtual = atual;
-                    printf("ID: %i -- Nome da tarefa: %s\n",getIDCelula(cel) ,compAtual->nomeTarefa);
-                    cel = getProximaCelulaLista(cel);
-                }
+                exibirCompromissos(listaP3,4);
+
                 printf("\nDigite o Id da tarefa que deseja remover: ");
                 scanf("%i", &idTarefa);
                 removerLista(listaP3, idTarefa);
