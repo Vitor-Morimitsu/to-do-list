@@ -62,11 +62,12 @@ void adicionarLista(Lista lista, void* conteudo, int id);
 /// @brief Remove um elemento de uma lista
 /// @param lista Lista já existente
 /// @param idRemov Id da célula que será removida
-void removerLista(Lista lista, int idRemov);
+/// @param destrutor Função responsável por liberar o conteúdo da célula (pode ser NULL)
+void removerLista(Lista lista, int idRemov, void (*destrutor)(void*));
 
-/// @brief Busca e retorna uma Célula da lista
+/// @brief Destroi a lista, liberando toda a memória alocada
 /// @param lista Lista já existente
-/// @param idCelula Id da célula a ser buscada na lista
-/// @return Celula da lista com o id correspondente
-CelulaLista buscarCelula(Lista lista,int idCelula);
+/// @param destrutor Função responsável por liberar o conteúdo de cada célula (pode ser NULL)
+void destruirLista(Lista lista, void (*destrutor)(void*));
+
 #endif

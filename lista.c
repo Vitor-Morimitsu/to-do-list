@@ -141,14 +141,14 @@ void adicionarLista(Lista lista, void* conteudo, int id){
     list->tamanho++;
 }
 
-void removerLista(Lista lista, int idRemov){
+void removerLista(Lista lista, int idRemov, void (*destrutor)(void*)){
     if(lista == NULL){
         printf("Erro em removerLista\n");
         return;
     }
 
     stLista* l = (stLista*)lista;
-    pont temp =(pont)buscarCelula(lista,idRemov);
+    pont temp = (pont)buscarCelula(lista, idRemov);
     if(temp == NULL){
         printf("Célula com ID %i não encontrada\n", idRemov);
         return;
@@ -160,32 +160,42 @@ void removerLista(Lista lista, int idRemov){
     if(l->primeiraTarefa == temp){
         l->primeiraTarefa = temp->proxima;
         if(l->primeiraTarefa != NULL){
-            l->primeiraTarefa->anterior = NULL;  // CORREÇÃO: atualiza o ponteiro anterior
+            l->primeiraTarefa->anterior = NULL;
         }else{
-            l->ultimaTarefa = NULL;  // Lista ficou vazia
+            l->ultimaTarefa = NULL;
         }
-        l->tamanho--;
-        free(temp->conteudo);
-        free(temp);
-
-    }else if ( l->ultimaTarefa == temp){
+    }else if(l->ultimaTarefa == temp){
         l->ultimaTarefa = temp->anterior;
         if(l->ultimaTarefa != NULL){
-            l->ultimaTarefa->proxima = NULL;  // CORREÇÃO: atualiza o ponteiro proxima
+            l->ultimaTarefa->proxima = NULL;
         }
-        l->tamanho--;
-        free(temp->conteudo);
-        free(temp);
-
     }else{
         // Célula do meio
         temp->anterior->proxima = temp->proxima;
-        temp->proxima->anterior = temp->anterior;  // CORREÇÃO: atualiza ambos os lados
-        l->tamanho--;
-        free(temp->conteudo);
-        free(temp);
+        temp->proxima->anterior = temp->anterior;
     }
 
+    l->tamanho--;
+    if(destrutor != NULL){
+        destrutor(temp->conteudo);
+    }
+    free(temp);
+}
+
+void destruirLista(Lista lista, void (*destrutor)(void*)){
+    if(lista == NULL) return;
+
+    stLista* l = (stLista*)lista;
+    pont atual = l->primeiraTarefa;
+    while(atual != NULL){
+        pont prox = atual->proxima;
+        if(destrutor != NULL){
+            destrutor(atual->conteudo);
+        }
+        free(atual);
+        atual = prox;
+    }
+    free(l);
 }
 
 
